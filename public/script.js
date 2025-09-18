@@ -1,7 +1,9 @@
 // Mobile menu toggle
 function toggleMobileMenu() {
   const navUl = document.querySelector('.navbar ul');
+  const toggle = document.querySelector('.mobile-menu-toggle');
   navUl.classList.toggle('active');
+  toggle.classList.toggle('active');
 }
 
 // Handle Enter key press in chat input
@@ -20,39 +22,20 @@ function sendMessage() {
     // Add user message with animation
     const userMsg = document.createElement("p");
     userMsg.textContent = "You: " + input.value;
-    userMsg.style.opacity = "0";
-    userMsg.style.transform = "translateX(-20px)";
-    userMsg.style.transition = "all 0.3s ease";
     userMsg.style.marginBottom = "10px";
-    userMsg.style.padding = "8px 12px";
-    userMsg.style.background = "#e3f2fd";
-    userMsg.style.borderRadius = "15px";
+    userMsg.style.padding = "12px 16px";
     userMsg.style.textAlign = "right";
+    userMsg.className = "user-message";
     messages.appendChild(userMsg);
-    
-    // Animate user message
-    setTimeout(() => {
-      userMsg.style.opacity = "1";
-      userMsg.style.transform = "translateX(0)";
-    }, 10);
 
     // Show typing indicator
     const typingIndicator = document.createElement("p");
     typingIndicator.innerHTML = "Sanjeevani Bot: <span class='loading'></span>";
-    typingIndicator.style.opacity = "0";
-    typingIndicator.style.transform = "translateX(20px)";
-    typingIndicator.style.transition = "all 0.3s ease";
     typingIndicator.style.marginBottom = "10px";
-    typingIndicator.style.padding = "8px 12px";
-    typingIndicator.style.background = "#f8f9fa";
-    typingIndicator.style.borderRadius = "15px";
+    typingIndicator.style.padding = "12px 16px";
     typingIndicator.style.textAlign = "left";
+    typingIndicator.className = "bot-message";
     messages.appendChild(typingIndicator);
-    
-    setTimeout(() => {
-      typingIndicator.style.opacity = "1";
-      typingIndicator.style.transform = "translateX(0)";
-    }, 300);
 
     // Simulate bot response delay
     setTimeout(() => {
@@ -60,25 +43,17 @@ function sendMessage() {
       
       const botMsg = document.createElement("p");
       botMsg.textContent = "Sanjeevani Bot: I'm here to help you with " + input.value + ". How can I support you today?";
-      botMsg.style.opacity = "0";
-      botMsg.style.transform = "translateX(20px)";
-      botMsg.style.transition = "all 0.3s ease";
       botMsg.style.marginBottom = "10px";
-      botMsg.style.padding = "8px 12px";
-      botMsg.style.background = "#e8f5e8";
-      botMsg.style.borderRadius = "15px";
+      botMsg.style.padding = "12px 16px";
       botMsg.style.textAlign = "left";
+      botMsg.className = "bot-message";
       messages.appendChild(botMsg);
       
-      setTimeout(() => {
-        botMsg.style.opacity = "1";
-        botMsg.style.transform = "translateX(0)";
-      }, 10);
-      
       messages.scrollTop = messages.scrollHeight;
-    }, 1500);
+    }, 1200);
 
     input.value = "";
+    messages.scrollTop = messages.scrollHeight;
   }
 }
 
@@ -100,11 +75,9 @@ function animateOnScroll() {
 function handleNavbarScroll() {
   const navbar = document.querySelector('.navbar');
   if (window.scrollY > 50) {
-    navbar.style.background = 'rgba(0, 86, 210, 0.98)';
-    navbar.style.boxShadow = '0 2px 20px rgba(0, 86, 210, 0.3)';
+    navbar.classList.add('scrolled');
   } else {
-    navbar.style.background = 'rgba(0, 86, 210, 0.95)';
-    navbar.style.boxShadow = 'none';
+    navbar.classList.remove('scrolled');
   }
 }
 

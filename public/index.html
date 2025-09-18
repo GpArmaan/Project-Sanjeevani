@@ -54,11 +54,14 @@
   <!-- Chatbot Section -->
   <section id="chatbot" class="chatbot animate-on-scroll">
     <h2>Chat with Sanjeevani</h2>
-    <div class="chat-box">
-      <div id="messages"></div>
-      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()">Send</button>
+    <p class="chatbot-subtitle">Get instant support and guidance from our AI-powered mental health assistant</p>
+    <div class="chat-container">
+      <div class="chat-box">
+        <div id="messages"></div>
+        <div class="chat-input-container">
+          <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+          <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+        </div>
       </div>
     </div>
   </section>
@@ -66,6 +69,7 @@
   <!-- Mood Tracker Section -->
   <section id="mood" class="mood animate-on-scroll">
     <h2>Daily Mood Tracker</h2>
+    <p class="mood-subtitle">Track your emotional well-being and identify patterns over time</p>
     <form action="/mood" method="POST">
       <label>Select your mood:</label>
       <select name="mood">
