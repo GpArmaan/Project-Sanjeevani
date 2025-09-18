@@ -22,8 +22,8 @@ function sendMessage() {
     // Add user message with animation
     const userMsg = document.createElement("p");
     userMsg.textContent = "You: " + input.value;
-    userMsg.style.marginBottom = "10px";
-    userMsg.style.padding = "12px 16px";
+    userMsg.style.marginBottom = "16px";
+    userMsg.style.padding = "16px 20px";
     userMsg.style.textAlign = "right";
     userMsg.className = "user-message";
     messages.appendChild(userMsg);
@@ -31,8 +31,8 @@ function sendMessage() {
     // Show typing indicator
     const typingIndicator = document.createElement("p");
     typingIndicator.innerHTML = "Sanjeevani Bot: <span class='loading'></span>";
-    typingIndicator.style.marginBottom = "10px";
-    typingIndicator.style.padding = "12px 16px";
+    typingIndicator.style.marginBottom = "16px";
+    typingIndicator.style.padding = "16px 20px";
     typingIndicator.style.textAlign = "left";
     typingIndicator.className = "bot-message";
     messages.appendChild(typingIndicator);
@@ -43,14 +43,14 @@ function sendMessage() {
       
       const botMsg = document.createElement("p");
       botMsg.textContent = "Sanjeevani Bot: I'm here to help you with " + input.value + ". How can I support you today?";
-      botMsg.style.marginBottom = "10px";
-      botMsg.style.padding = "12px 16px";
+      botMsg.style.marginBottom = "16px";
+      botMsg.style.padding = "16px 20px";
       botMsg.style.textAlign = "left";
       botMsg.className = "bot-message";
       messages.appendChild(botMsg);
       
       messages.scrollTop = messages.scrollHeight;
-    }, 1200);
+    }, 1500);
 
     input.value = "";
     messages.scrollTop = messages.scrollHeight;
