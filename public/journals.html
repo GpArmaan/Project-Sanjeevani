@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sanjeevani — Journals</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Journals Section Styles */
+    .journals {
+      padding: 100px 20px;
+      background: #000000; /* light background */
+      min-height: 100vh;
+      text-align: center;
+    }
+    .journals h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      color: var(--primary-600, #0077cc);
+    }
+    .journals .subtitle {
+      font-size: 1.2rem;
+      color: var(--gray-600, #4b5563);
+      margin-bottom: 40px;
+    }
+    .journal-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    #journalForm {
+      margin-bottom: 40px;
+    }
+    #journalTitle, #journalEntry {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #000000;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    #journalEntry {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .journal-card {
+      background: rgb(16, 15, 15);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .journal-card:hover {
+      transform: translateY(-4px);
+    }
+    .card-top {
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-500, #3b82f6), var(--primary-400, #60a5fa));
+    }
+    .card-bottom {
+      padding: 16px;
+    }
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      color: #1f2937;
+    }
+    .card-snippet {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    .card-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-left: 6px;
+    }
+    .empty-note {
+      text-align: center;
+      color: #6b7280;
+      font-style: italic;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="image.png" alt="Sanjeevani Logo">
+    </div>
+    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="http://127.0.0.1:5000">Chatbot</a></li>
+      <li><a href="index.html#mood">Mood Tracker</a></li>
+      <li><a href="index.html#admin">Admin</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="journals.html">Journals</a></li>
+    </ul>
+    <a href="#" class="btn">Get Support</a>
+  </nav>
+
+  <!-- Journals Section -->
+  <section class="journals animate-on-scroll">
+    <h2>Personal Journals</h2>
+    <p class="subtitle">Write, save and reflect. Entries are stored permanently in the database with date & time.</p>
+
+    <div class="journal-container">
+      <form id="journalForm">
+        <input id="journalTitle" type="text" placeholder="Title (optional)" />
+        <textarea id="journalEntry" placeholder="Write your journal entry here..." required></textarea>
+        <div style="display:flex;gap:12px;justify-content:flex-end;">
+          <button type="submit" class="btn">Save Journal</button>
+        </div>
+      </form>
+
+      <div id="journalList" class="journal-grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('journalForm');
+    const titleInput = document.getElementById('journalTitle');
+    const entryInput = document.getElementById('journalEntry');
+    const journalList = document.getElementById('journalList');
+
+    const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    function createCardHtml(j) {
+      const shortText = esc(j.entry.length > 120 ? j.entry.slice(0,120) + '…' : j.entry);
+      const title = j.title ? esc(j.title) : (j.entry.slice(0,40) || 'Untitled');
+      const time = new Date(j.date).toLocaleString();
+      return `
+        <article class="journal-card" data-id="${j._id}">
+          <div class="card-top"></div>
+          <div class="card-bottom">
+            <div class="card-title">${title}</div>
+            <div class="card-snippet">${shortText}</div>
+            <div class="card-meta">
+              <small class="timestamp">${esc(time)}</small>
+              <div class="card-actions">
+                <button class="delete-btn" title="Delete">🗑</button>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    async function loadJournals() {
+      const res = await fetch("/api/journals");
+      const data = await res.json();
+      render(data);
+    }
+
+    function render(arr) {
+      if (!arr.length) {
+        journalList.innerHTML = `<div class="empty-note">No journals yet — write your first one above.</div>`;
+        return;
+      }
+      journalList.innerHTML = arr.map(createCardHtml).join('');
+      journalList.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async e => {
+          const id = e.currentTarget.closest('.journal-card').dataset.id;
+          if (!confirm("Delete this journal?")) return;
+          await fetch(`/api/journals/${id}`, { method: "DELETE" });
+          loadJournals();
+        });
+      });
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const title = titleInput.value.trim();
+      const text = entryInput.value.trim();
+      if (!text) return;
+      await fetch("/api/journals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, entry: text })
+      });
+      titleInput.value = '';
+      entryInput.value = '';
+      loadJournals();
+    });
+
+    loadJournals();
+  });
+  </script>
+</body>
+</html>

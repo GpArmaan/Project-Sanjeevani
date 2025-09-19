@@ -9,27 +9,31 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar">
-    <!-- <div class="logo">SANJEEVANI</div> -->
     <div class="logo">
-        <img src="Gemini_Generated_Image_y6uxqny6uxqny6ux.png" alt="Sanjeevani Logo" style="height:40px;vertical-align:middle; margin-right:8px;">
+      <img src="image.png" alt="Sanjeevani Logo">
 
-    <!-- <img src="Screenshot-2025-09-18-203852.jpg" alt="Sanjeevani Logo" style="height:40px;vertical-align:middle; margin-right:8px;"> -->
-    SANJEEVANI
-  </div>
+    </div>
+    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <ul>
       <li><a href="#home">Home</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="http://127.0.0.1:5000">Chatbot</a></li>
       <li><a href="#mood">Mood Tracker</a></li>
       <li><a href="#admin">Admin</a></li>
+      <li><a href="/resources">Resources</a></li>
+      <li><a href="/journals">Journals</a></li>
     </ul>
-    <button class="btn">Get Support</button>
+    <a href="#" class="btn">Get Support</a>
   </nav>
 
   <!-- Hero Section -->
   <section id="home" class="hero">
     <h1>SANJEEVANI</h1>
-    <p>Supportive AI for Nurturing Joy, Education, Emotional Vitality, Awareness, and Nurturing India.</p>
+    <p>Supportive AI for Nurturing Joy, Education, Emotional Vitality, Awareness, and Nurturing India</p>
     <div class="actions">
       <a href="http://127.0.0.1:5000" class="btn">Try Chatbot</a>
       <a href="#mood" class="btn">Track Mood</a>
@@ -37,9 +41,9 @@
   </section>
 
   <!-- Features Section -->
-  <section id="features" class="features">
+  <section id="features" class="features animate-on-scroll">
     <h2>AI Chatbot Support</h2>
-    <p>24/7 emotional support with intelligent risk detection and friendly conversations.</p>
+    <p>24/7 emotional support with intelligent risk detection and friendly conversations</p>
     <ul>
       <li>Natural language processing for empathetic responses</li>
       <li>Risk level classification (low, medium, high)</li>
@@ -50,18 +54,24 @@
   </section>
 
   <!-- Chatbot Section -->
-  <section id="chatbot" class="chatbot">
+  <section id="chatbot" class="chatbot animate-on-scroll">
     <h2>Chat with Sanjeevani</h2>
-    <div class="chat-box">
-      <div id="messages"></div>
-      <input type="text" id="userInput" placeholder="Type your message...">
-      <button onclick="sendMessage()">Send</button>
+    <p class="chatbot-subtitle">Get instant support and guidance from our AI-powered mental health assistant</p>
+    <div class="chat-container">
+      <div class="chat-box">
+        <div id="messages"></div>
+        <div class="chat-input-container">
+          <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+          <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Mood Tracker Section -->
-  <section id="mood" class="mood">
+  <section id="mood" class="mood animate-on-scroll">
     <h2>Daily Mood Tracker</h2>
+    <p class="mood-subtitle">Track your emotional well-being and identify patterns over time</p>
     <form action="/mood" method="POST">
       <label>Select your mood:</label>
       <select name="mood">
@@ -71,7 +81,7 @@
         <option>Anxious</option>
         <option>Excited</option>
       </select>
-      <button type="submit">Save Mood</button>
+      <button type="submit" class="btn">Save Mood</button>
     </form>
   </section>
 
